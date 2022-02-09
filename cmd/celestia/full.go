@@ -11,32 +11,32 @@ import (
 // parent command.
 
 func init() {
-	bridgeCmd.AddCommand(
+	fullCmd.AddCommand(
 		cmdnode.Init(
-			cmdnode.NodeFlags(node.Bridge),
+			cmdnode.NodeFlags(node.Full),
 			cmdnode.P2PFlags(),
-			cmdnode.CoreFlags(),
+			cmdnode.HeadersFlags(),
 			cmdnode.MiscFlags(),
 		),
 		cmdnode.Start(
-			cmdnode.NodeFlags(node.Bridge),
+			cmdnode.NodeFlags(node.Full),
 			cmdnode.P2PFlags(),
-			cmdnode.CoreFlags(),
+			cmdnode.HeadersFlags(),
 			cmdnode.MiscFlags(),
 		),
 	)
 }
 
-var bridgeCmd = &cobra.Command{
-	Use:   "bridge [subcommand]",
+var fullCmd = &cobra.Command{
+	Use:   "full [subcommand]",
 	Args:  cobra.NoArgs,
-	Short: "Manage your Bridge node",
+	Short: "Manage your Full node",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		env, err := cmdnode.GetEnv(cmd.Context())
 		if err != nil {
 			return err
 		}
-		env.SetNodeType(node.Bridge)
+		env.SetNodeType(node.Full)
 
 		err = cmdnode.ParseNodeFlags(cmd, env)
 		if err != nil {
@@ -48,7 +48,7 @@ var bridgeCmd = &cobra.Command{
 			return err
 		}
 
-		err = cmdnode.ParseCoreFlags(cmd, env)
+		err = cmdnode.ParseHeadersFlags(cmd, env)
 		if err != nil {
 			return err
 		}
